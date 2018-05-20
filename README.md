@@ -1,1 +1,1 @@
-# orangepi_tft
+# https://github.com/nopnop2002/wiringpi-tft-tool
