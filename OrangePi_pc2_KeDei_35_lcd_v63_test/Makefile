@@ -1,0 +1,6 @@
+LDLIBS = -lwiringPi -lwiringPiDev -lpthread -lm
+
+all:
+	gcc -o kedei_lcd_v63_pi_wiringpi kedei_lcd_v63_pi_wiringpi.c  $(LDLIBS)
+clean:
+	rm -f kedei_lcd_v63_pi_wiringpi
