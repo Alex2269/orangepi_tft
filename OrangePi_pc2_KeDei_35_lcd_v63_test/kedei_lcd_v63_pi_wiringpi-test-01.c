@@ -154,7 +154,6 @@ void lcd_colorRGB(uint8_t r, uint8_t g, uint8_t b)
 void lcd_setrotation(uint8_t m)
 {
   lcd_cmd(0x36);
-  //lcd_data(lcd_rotations[m]);
   if(m==0)
   {
     lcd_data(0x40|0x08);
@@ -335,4 +334,3 @@ int main(int argc,char *argv[])
   lcd_img("kedei_lcd_v50_pi.bmp", 50, 5);
   lcd_close();
 }
-
