@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/time.h>
@@ -13,12 +14,9 @@
 #define SPI_NUM 1
 #define LCD_CS 11
 #define TOUCH_CS 0
+
 #define LCD_WIDTH 480
 #define LCD_HEIGHT 320
-
-#define uint8_t unsigned char
-#define uint16_t unsigned int
-#define uint32_t unsigned long
 
 uint8_t lcd_rotations[4] =
 {
