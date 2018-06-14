@@ -335,3 +335,4 @@ int main(int argc,char *argv[])
   lcd_img("kedei_lcd_v50_pi.bmp", 50, 5);
   lcd_close();
 }
+
