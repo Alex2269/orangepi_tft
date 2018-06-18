@@ -1,6 +1,6 @@
 KeDei 6.3 SPI TFT Display Test Program
 
-#### Enable SPI
+
 
 #### compile
 cd ~/OrangePi_KeDei_35_lcd_v63  
@@ -9,7 +9,8 @@ make
 #### execute !
 ./kedei_lcd_v63_pi_wiringpi
 
-
+``` cpp
+Enable SPI:
 edit file /boot/armbianEnv.txt
 
 verbosity=1
@@ -23,6 +24,7 @@ rootdev=UUID=dff839d5-7c67-464f-8866-c0029c7ec486
 rootfstype=ext4
 usbstoragequirks=0x2537:0x1066:u,0x2537:0x1068:u
 
+```
 
 
 
