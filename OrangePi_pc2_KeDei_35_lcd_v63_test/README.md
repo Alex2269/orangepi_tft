@@ -9,8 +9,9 @@ make
 # execute !
 ./kedei_lcd_v63_pi_wiringpi
 
-# Enable SPI:
-# edit file /boot/armbianEnv.txt
+# for enable SPI - edit file /boot/armbianEnv.txt
+
+example armbianEnv.txt:
 
 verbosity=1
 console=both
