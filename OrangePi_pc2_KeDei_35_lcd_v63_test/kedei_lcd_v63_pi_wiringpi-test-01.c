@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdio.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/time.h>
@@ -11,12 +10,15 @@
 #include <wiringPiSPI.h>
 #include <wiringPi.h>
 
-#define SPI_NUM 1
+#define LCD_SPI 1
 #define LCD_CS 11
 #define TOUCH_CS 0
-
 #define LCD_WIDTH 480
 #define LCD_HEIGHT 320
+
+#define uint8_t unsigned char
+#define uint16_t unsigned int
+#define uint32_t unsigned long
 
 uint8_t lcd_rotations[4] =
 {
@@ -61,7 +63,7 @@ int lcd_open(void)
   r = wiringPiSetup();
   if (r<0)return -1;
 
-  r = wiringPiSPISetup(SPI_NUM, 12000000);
+  r = wiringPiSPISetup(LCD_SPI, 16000000);
   if(r<0)return -1;
 
   #if 0
@@ -96,21 +98,21 @@ void lcd_rst(void)
   buff[1] = 0x01;
   buff[2] = 0x00;
   buff[3] = 0x00;
-  spi_transmit(SPI_NUM, &buff[0], sizeof(buff));
+  spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
   delayms(50);
 
   buff[0] = 0x00;
   buff[1] = 0x00;
   buff[2] = 0x00;
   buff[3] = 0x00;
-  spi_transmit(SPI_NUM, &buff[0], sizeof(buff));
+  spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
   delayms(100);
 
   buff[0] = 0x00;
   buff[1] = 0x01;
   buff[2] = 0x00;
   buff[3] = 0x00;
-  spi_transmit(SPI_NUM, &buff[0], sizeof(buff));
+  spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
   delayms(50);
 }
 
@@ -120,7 +122,7 @@ void lcd_cmd(uint8_t cmd)
   b1[0] = 0x11;
   b1[1] = 0x00;
   b1[2] = cmd;
-  spi_transmit(LCD_CS, &b1[0], sizeof(b1));
+  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
 }
 
 void lcd_data(uint8_t dat)
@@ -129,7 +131,7 @@ void lcd_data(uint8_t dat)
   b1[0] = 0x15;
   b1[1] = 0x00;
   b1[2] = dat;
-  spi_transmit(LCD_CS, &b1[0], sizeof(b1));
+  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
 }
 
 void lcd_color(uint16_t col)
@@ -138,7 +140,7 @@ void lcd_color(uint16_t col)
   b1[0] = 0x15;
   b1[1] = col>>8;
   b1[2] = col&0xFF;
-  spi_transmit(LCD_CS, &b1[0], sizeof(b1));
+  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
 }
 
 void lcd_colorRGB(uint8_t r, uint8_t g, uint8_t b)
@@ -148,7 +150,7 @@ void lcd_colorRGB(uint8_t r, uint8_t g, uint8_t b)
   b1[0] = 0x15;
   b1[1] = col>>8;
   b1[2] = col&0x00FF;
-  spi_transmit(LCD_CS, &b1[0], sizeof(b1));
+  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
 }
 
 void lcd_setrotation(uint8_t m)

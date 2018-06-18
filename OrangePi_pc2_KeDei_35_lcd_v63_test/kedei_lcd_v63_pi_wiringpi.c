@@ -63,7 +63,7 @@ int lcd_open(void)
   r = wiringPiSetup();
   if (r<0)return -1;
 
-  r = wiringPiSPISetup(LCD_SPI, 12000000);
+  r = wiringPiSPISetup(LCD_SPI, 16000000);
   if(r<0)return -1;
 
   #if 0
