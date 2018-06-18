@@ -2,15 +2,15 @@ KeDei 6.3 SPI TFT Display Test Program
 
 ``` cpp
 
-#### compile
+# compile
 cd ~/OrangePi_KeDei_35_lcd_v63  
 make
 
-#### execute !
+# execute !
 ./kedei_lcd_v63_pi_wiringpi
 
-Enable SPI:
-edit file /boot/armbianEnv.txt
+# Enable SPI:
+# edit file /boot/armbianEnv.txt
 
 verbosity=1
 console=both
