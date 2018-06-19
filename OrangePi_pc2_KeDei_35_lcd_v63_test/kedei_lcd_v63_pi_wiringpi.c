@@ -20,37 +20,10 @@
 #define uint16_t unsigned int
 #define uint32_t unsigned long
 
-uint8_t lcd_rotations[4] =
-{
-  0b11101010,
-  0b01001010,
-  0b00101010,
-  0b10001010
-};
-
 volatile uint8_t color;
 volatile uint8_t lcd_rotation;
 volatile uint16_t lcd_h;
 volatile uint16_t lcd_w;
-uint16_t colors[16] =
-{
-  0b0000000000000000,
-  0b0000000000010000,
-  0b0000000000011111,
-  0b0000010011000000,
-  0b0000010011010011,
-  0b0000011111100000,
-  0b0000011111111111,
-  0b1000000000000000,
-  0b1000000000010000,
-  0b1001110011000000,
-  0b1000010000010000,
-  0b1100111001111001,
-  0b1111100000000000,
-  0b1111100000011111,
-  0b1111111111100000,
-  0b1111111111111111
-};
 
 void delayms(int ms)
 {
@@ -93,25 +66,22 @@ int spi_transmit(int devsel, uint8_t *data, int len)
 
 void lcd_rst(void)
 {
-  uint8_t buff[4];
+  uint8_t buff[3];
   buff[0] = 0x00;
   buff[1] = 0x01;
   buff[2] = 0x00;
-  buff[3] = 0x00;
   spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
   delayms(50);
 
   buff[0] = 0x00;
   buff[1] = 0x00;
   buff[2] = 0x00;
-  buff[3] = 0x00;
   spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
   delayms(100);
 
   buff[0] = 0x00;
   buff[1] = 0x01;
   buff[2] = 0x00;
-  buff[3] = 0x00;
   spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
   delayms(50);
 }
@@ -146,7 +116,7 @@ void lcd_color(uint16_t col)
 void lcd_colorRGB(uint8_t r, uint8_t g, uint8_t b)
 {
   uint8_t b1[3];
-  uint16_t col = ((r<<8) & 0xF800) | ((g<<3) & 0x07E0) | ((b>>3) & 0x001F);
+  uint16_t col = ((b<<8) & 0xF800) | ((g<<3) & 0x07E0) | ((r>>3) & 0x001F);
   b1[0] = 0x15;
   b1[1] = col>>8;
   b1[2] = col&0x00FF;
@@ -156,16 +126,29 @@ void lcd_colorRGB(uint8_t r, uint8_t g, uint8_t b)
 void lcd_setrotation(uint8_t m)
 {
   lcd_cmd(0x36);
-  lcd_data(lcd_rotations[m]);
-  if (m&1)
+  if(m==0)
   {
-    lcd_h = LCD_WIDTH;
+    lcd_data(0x40|0x08);
     lcd_w = LCD_HEIGHT;
+    lcd_h = LCD_WIDTH;
   }
-  else
+  if(m==1)
   {
-    lcd_h = LCD_HEIGHT;
+    lcd_data(0x20|0x08);
     lcd_w = LCD_WIDTH;
+    lcd_h = LCD_HEIGHT;
+  }
+  if(m==2)
+  {
+    lcd_data(0x80|0x08);
+    lcd_w = LCD_HEIGHT;
+    lcd_h = LCD_WIDTH;
+  }
+  if(m==3)
+  {
+    lcd_data(0x80|0x40|0x20|0x08);
+    lcd_w = LCD_WIDTH;
+    lcd_h = LCD_HEIGHT;
   }
 }
 
@@ -181,47 +164,28 @@ void lcd_init(void)
   lcd_cmd(0x11);
   delayms(150);
   lcd_cmd(0xB0); lcd_data(0x00);
-  lcd_cmd(0xB3); lcd_data(0x02); lcd_data(0x00); lcd_data(0x00); lcd_data(0x00);
-  lcd_cmd(0xB9); lcd_data(0x01); lcd_data(0x00); lcd_data(0x0F); lcd_data(0x0F);
-  lcd_cmd(0xC0); lcd_data(0x13); lcd_data(0x3B); lcd_data(0x00); lcd_data(0x02);
+
   lcd_data(0x00); lcd_data(0x01); lcd_data(0x00); lcd_data(0x43);
-  lcd_cmd(0xC1); lcd_data(0x08); lcd_data(0x0F); lcd_data(0x08); lcd_data(0x08);
-  lcd_cmd(0xC4); lcd_data(0x11); lcd_data(0x07); lcd_data(0x03); lcd_data(0x04);
+
   lcd_cmd(0xC6); lcd_data(0x00);
   lcd_cmd(0xC8); lcd_data(0x03); lcd_data(0x03); lcd_data(0x13); lcd_data(0x5C);
-  lcd_data(0x03); lcd_data(0x07); lcd_data(0x14); lcd_data(0x08);
-  lcd_data(0x00); lcd_data(0x21); lcd_data(0x08); lcd_data(0x14);
-  lcd_data(0x07); lcd_data(0x53); lcd_data(0x0C); lcd_data(0x13);
-  lcd_data(0x03); lcd_data(0x03); lcd_data(0x21); lcd_data(0x00);
+
   lcd_cmd(0x35); lcd_data(0x00);
   lcd_cmd(0x36); lcd_data(0x60);
   lcd_cmd(0x3A); lcd_data(0x55);
-  lcd_cmd(0x44); lcd_data(0x00); lcd_data(0x01);
   lcd_cmd(0xD0); lcd_data(0x07); lcd_data(0x07); lcd_data(0x1D); lcd_data(0x03);
-  lcd_cmd(0xD1); lcd_data(0x03); lcd_data(0x30); lcd_data(0x10);
-  lcd_cmd(0xD2); lcd_data(0x03); lcd_data(0x14); lcd_data(0x04);
-  lcd_cmd(0x29);
-  delayms(30);
-  lcd_cmd(0x2A); lcd_data(0x00); lcd_data(0x00); lcd_data(0x01); lcd_data(0x3F);
-  lcd_cmd(0x2B); lcd_data(0x00); lcd_data(0x00); lcd_data(0x01); lcd_data(0xE0);
-  lcd_cmd(0xB4); lcd_data(0x00);
-  lcd_cmd(0x2C);
-  delayms(10);
-  lcd_setrotation(0);
+
+  lcd_cmd(0x21); // INVON 0x21
+  lcd_setrotation(1);
+  lcd_cmd(0x29); // Display ON
 }
 
 void lcd_setframe(uint16_t x, uint16_t y, uint16_t w, uint16_t h)
 {
   lcd_cmd(0x2A);
-  lcd_data(x>>8);
-  lcd_data(x&0xFF);
-  lcd_data(((w+x)-1)>>8);
-  lcd_data(((w+x)-1)&0xFF);
+  lcd_data(x>>8); lcd_data(x&0xFF); lcd_data(((w+x)-1)>>8); lcd_data(((w+x)-1)&0xFF);
   lcd_cmd(0x2B);
-  lcd_data(y>>8);
-  lcd_data(y&0xFF);
-  lcd_data(((h+y)-1)>>8);
-  lcd_data(((h+y)-1)&0xFF);
+  lcd_data(y>>8); lcd_data(y&0xFF); lcd_data(((h+y)-1)>>8); lcd_data(((h+y)-1)&0xFF);
   lcd_cmd(0x2C);
 }
 
@@ -292,21 +256,6 @@ void lcd_img(char *fname, uint16_t x, uint16_t y)
   }
 }
 
-void loop()
-{
-  lcd_setrotation(lcd_rotation);
-  lcd_fillframe(0,0,lcd_w,lcd_h,colors[color]);
-  lcd_fillframe(5,5,lcd_w-100,20,colors[(color+1) & 0xF]);
-  color++;
-  if (color==16)
-  {
-    color=0;
-  }
-  lcd_rotation++;
-  if (lcd_rotation==4) lcd_rotation=0;
-  delayms(500);
-}
-
 int main(int argc,char *argv[])
 {
   if(lcd_open())
@@ -329,13 +278,5 @@ int main(int argc,char *argv[])
   lcd_fillRGB(0x00, 0x00, 0x00);
   lcd_img("kedei_lcd_v50_pi.bmp", 50, 5);
   delayms(500);
-  color=0;
-  lcd_rotation=0;
-  loop(); loop(); loop(); loop();
-  loop(); loop(); loop(); loop();
-  loop(); loop(); loop(); loop();
-  loop(); loop(); loop(); loop();
-  loop();
-  lcd_img("kedei_lcd_v50_pi.bmp", 50, 5);
   lcd_close();
 }
