@@ -116,7 +116,7 @@ void lcd_color(uint16_t col)
 void lcd_colorRGB(uint8_t r, uint8_t g, uint8_t b)
 {
   uint8_t b1[3];
-  uint16_t col = ((b<<8) & 0xF800) | ((g<<3) & 0x07E0) | ((r>>3) & 0x001F);
+  uint16_t col = ((r>>3) & 0x001F) | ((g<<3) & 0x07E0) | ((b<<8) & 0xF800);
   b1[0] = 0x15;
   b1[1] = col>>8;
   b1[2] = col&0x00FF;
