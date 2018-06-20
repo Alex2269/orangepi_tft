@@ -12,7 +12,7 @@
 
 #define LCD_SPI 1
 #define LCD_CS 11
-#define TOUCH_CS 0
+#define TOUCH_SPI 0
 #define LCD_WIDTH 480
 #define LCD_HEIGHT 320
 
@@ -40,7 +40,7 @@ int lcd_open(void)
   if(r<0)return -1;
 
   #if 0
-  r = wiringPiSPISetup(TOUCH_CS, 1000000);
+  r = wiringPiSPISetup(TOUCH_SPI, 1000000);
   if(r<0) return -1;
 
   #endif
