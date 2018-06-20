@@ -165,7 +165,7 @@ void lcd_init(void)
   lcd_cmd(0xB0); lcd_data(0x00);
   lcd_cmd(0xD0); lcd_data(0x07); lcd_data(0x07); lcd_data(0x1D); lcd_data(0x03);
   lcd_cmd(0x21); // INVON 0x21
-  lcd_setrotation(3);
+  lcd_setrotation(1);
   lcd_cmd(0x29); // Display ON
 }
 
@@ -256,16 +256,22 @@ int main(int argc,char *argv[])
 
   lcd_fill(0x0);
   lcd_img("kedei_lcd_v50_pi.bmp", 50, 5);
-  delayms(500);
   lcd_fillRGB(0xFF, 0x00, 0x00);
+  lcd_img("castle.bmp", 5, 5);
   lcd_fillRGB(0x00, 0xFF, 0x00);
+  lcd_img("castle.bmp", 5, 5);
   lcd_fillRGB(0xFF, 0xFF, 0x00);
+  lcd_img("castle.bmp", 5, 5);
   lcd_fillRGB(0x00, 0x00, 0xFF);
+  lcd_img("castle.bmp", 5, 5);
   lcd_fillRGB(0xFF, 0x00, 0xFF);
+  lcd_img("castle.bmp", 5, 5);
   lcd_fillRGB(0x00, 0xFF, 0xFF);
+  lcd_img("castle.bmp", 5, 5);
   lcd_fillRGB(0xFF, 0xFF, 0xFF);
+  lcd_img("castle.bmp", 5, 5);
   lcd_fillRGB(0x00, 0x00, 0x00);
-  lcd_img("kedei_lcd_v50_pi.bmp", 50, 5);
+  lcd_img("castle.bmp", 5, 5);
   delayms(500);
   lcd_close();
 }
