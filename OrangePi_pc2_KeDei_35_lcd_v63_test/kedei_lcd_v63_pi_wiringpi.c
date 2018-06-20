@@ -88,39 +88,39 @@ void lcd_rst(void)
 
 void lcd_cmd(uint8_t cmd)
 {
-  uint8_t b1[3];
-  b1[0] = 0x11;
-  b1[1] = 0x00;
-  b1[2] = cmd;
-  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
+  uint8_t buff[3];
+  buff[0] = 0x11;
+  buff[1] = 0x00;
+  buff[2] = cmd;
+  spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
 }
 
 void lcd_data(uint8_t dat)
 {
-  uint8_t b1[3];
-  b1[0] = 0x15;
-  b1[1] = 0x00;
-  b1[2] = dat;
-  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
+  uint8_t buff[3];
+  buff[0] = 0x15;
+  buff[1] = 0x00;
+  buff[2] = dat;
+  spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
 }
 
 void lcd_color(uint16_t col)
 {
-  uint8_t b1[3];
-  b1[0] = 0x15;
-  b1[1] = col>>8;
-  b1[2] = col&0xFF;
-  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
+  uint8_t buff[3];
+  buff[0] = 0x15;
+  buff[1] = col>>8;
+  buff[2] = col&0xFF;
+  spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
 }
 
 void lcd_colorRGB(uint8_t r, uint8_t g, uint8_t b)
 {
-  uint8_t b1[3];
+  uint8_t buff[3];
   uint16_t col = ((r>>3) & 0x001F) | ((g<<3) & 0x07E0) | ((b<<8) & 0xF800);
-  b1[0] = 0x15;
-  b1[1] = col>>8;
-  b1[2] = col&0x00FF;
-  spi_transmit(LCD_SPI, &b1[0], sizeof(b1));
+  buff[0] = 0x15;
+  buff[1] = col>>8;
+  buff[2] = col&0x00FF;
+  spi_transmit(LCD_SPI, &buff[0], sizeof(buff));
 }
 
 void lcd_setrotation(uint8_t m)
