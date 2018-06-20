@@ -155,28 +155,17 @@ void lcd_setrotation(uint8_t m)
 void lcd_init(void)
 {
   lcd_rst();
+
   lcd_cmd(0x00);
-  delayms(10);
-  lcd_cmd(0xFF); lcd_cmd(0xFF);
-  delayms(10);
-  lcd_cmd(0xFF); lcd_cmd(0xFF); lcd_cmd(0xFF); lcd_cmd(0xFF);
-  delayms(15);
+  delayms(25);
   lcd_cmd(0x11);
   delayms(150);
+  lcd_cmd(0x35);
+  lcd_cmd(0x3A); lcd_data(0x55); // color rgb 565
   lcd_cmd(0xB0); lcd_data(0x00);
-
-  lcd_data(0x00); lcd_data(0x01); lcd_data(0x00); lcd_data(0x43);
-
-  lcd_cmd(0xC6); lcd_data(0x00);
-  lcd_cmd(0xC8); lcd_data(0x03); lcd_data(0x03); lcd_data(0x13); lcd_data(0x5C);
-
-  lcd_cmd(0x35); lcd_data(0x00);
-  lcd_cmd(0x36); lcd_data(0x60);
-  lcd_cmd(0x3A); lcd_data(0x55);
   lcd_cmd(0xD0); lcd_data(0x07); lcd_data(0x07); lcd_data(0x1D); lcd_data(0x03);
-
   lcd_cmd(0x21); // INVON 0x21
-  lcd_setrotation(1);
+  lcd_setrotation(3);
   lcd_cmd(0x29); // Display ON
 }
 
