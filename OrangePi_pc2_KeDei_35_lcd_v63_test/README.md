@@ -20,7 +20,7 @@ overlays=spi-spidev
 param_spidev_spi_bus=1
 param_spidev_spi_cs=0
 param_spidev_max_freq=100000000
-rootdev=UUID=dff839d5-7c67-464f-8866-c0029c7ec486
+rootdev=UUID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 rootfstype=ext4
 usbstoragequirks=0x2537:0x1066:u,0x2537:0x1068:u
 
